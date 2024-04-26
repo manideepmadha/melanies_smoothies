@@ -43,7 +43,7 @@ if ingredients_list:
     for fruits_chosen in ingredients_list:
         st.subheader(fruits_chosen+ ' Nutrition Info')
         ingredients_string+= fruits_chosen + ' '
-        search_on = p_df.iloc[p_df['FRUIT_NAME']==fruits_chosen, 'SEARCH_ON'].iloc[0]
+        search_on = p_df.loc[p_df['FRUIT_NAME']==fruits_chosen, 'SEARCH_ON'].iloc[0]
         st.write('You searched value: ' + fruits_chosen + 'searched value: ' + search_on + '...')
         response = re.get("https://fruityvice.com/api/fruit/"+ fruits_chosen)
         df = st.dataframe(data=response.json(), use_container_width=True)
