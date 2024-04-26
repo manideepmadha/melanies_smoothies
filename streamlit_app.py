@@ -49,4 +49,6 @@ if ingredients_list:
 
 import requests as re
 response = re.get("https://fruityvice.com/api/fruit/watermelon")
-st.write(response.status_code)
+# st.write(response.status_code)
+df = st.dataframe(data=response.json(), use_container_width=True)
+st.write(df)
