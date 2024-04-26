@@ -45,3 +45,8 @@ if ingredients_list:
     if time_to_insert:
         session.sql(my_insert_smt).collect()
         st.success('Your Smoothie is ordered, '+ name_on_order+ '!', icon="✅")
+
+
+import requests as re
+response = re.get("https://fruityvice.com/api/fruit/watermelon")
+st.write(response.status_code)
