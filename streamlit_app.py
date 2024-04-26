@@ -3,6 +3,7 @@ import streamlit as st
 #from snowflake.snowpark.context import get_active_session
 from snowflake.snowpark.functions import col
 import requests as re
+import pandas as pd
 
 
 cntx = st.connection("snowflake")
@@ -27,8 +28,10 @@ st.write('The name on your smoothie will be: ', name_on_order)
 
 #session = get_active_session()
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'), col('SEARCH_ON))
-st.dataframe(data=my_dataframe, use_container_width=True)
-st.stop
+#st.dataframe(data=my_dataframe, use_container_width=True)
+p_df = my_dataframe.to_pandas()
+# st.dataframe(p_df)
+# st.stop
 
 
 ingredients_list = st.multiselect('Choose up to 5 ingredients:', my_dataframe, max_selections=5)
@@ -40,6 +43,8 @@ if ingredients_list:
     for fruits_chosen in ingredients_list:
         st.subheader(fruits_chosen+ ' Nutrition Info')
         ingredients_string+= fruits_chosen + ' '
+        search_on = p_df.iloc[p_df['FRUIT_NAME']==fruits_chosen, 'SEARCH_ON'].iloc[0]
+        st.write('You searched value: ' + fruits_chosen + 'searched value: ' + search_on + '...')
         response = re.get("https://fruityvice.com/api/fruit/"+ fruits_chosen)
         df = st.dataframe(data=response.json(), use_container_width=True)
 
